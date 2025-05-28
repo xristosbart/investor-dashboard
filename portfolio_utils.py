@@ -22,3 +22,13 @@ def calculate_metrics(data, weights):
         "CAGR": f"{cagr:.2%}",
         "Sharpe Ratio": round(sharpe_ratio, 2)
     }
+
+def plot_performance(data, weights):
+    returns = data.pct_change().dropna()
+    portfolio_return = returns.dot(weights)
+    cumulative = (1 + portfolio_return).cumprod()
+
+    fig, ax = plt.subplots()
+    cumulative.plot(ax=ax)
+    ax.set_title("Portfolio Cumulative Return")
+    st.pyplot(fig)
