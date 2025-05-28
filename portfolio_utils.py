@@ -5,8 +5,17 @@ import matplotlib.pyplot as plt
 import streamlit as st
 
 def get_portfolio_data(tickers, period="1y"):
-    data = yf.download(tickers, period=period)["Adj Close"]
-    return data
+    data = yf.download(tickers, period=period, group_by='ticker', auto_adjust=True)
+
+    if len(tickers) == 1:
+        # Single ticker case: return as DataFrame
+        df = data
+        df.columns = [tickers[0]]  # Rename column for consistency
+    else:
+        # Multiple tickers case
+        df = pd.DataFrame({ticker: data[ticker]['Close'] for ticker in tickers})
+    
+    return df
 
 def calculate_metrics(data, weights):
     returns = data.pct_change().dropna()
