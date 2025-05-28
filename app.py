@@ -16,10 +16,11 @@ if st.button("Analyze Portfolio"):
     else:
         try:
             df = get_portfolio_data(ticker_list)
-            ...
+
+            metrics = calculate_metrics(df, weight_list)
+            st.write("Performance Metrics:", metrics)
+            plot_performance(df, weight_list)
+
         except Exception as e:
             st.error(f"Something went wrong fetching the data: {e}")
-        metrics = calculate_metrics(df, weight_list)
-
-    st.write("Performance Metrics:", metrics)
-    plot_performance(df, weight_list)
+    
